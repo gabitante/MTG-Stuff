@@ -1,0 +1,248 @@
+Mythic <- function(winrate, num_iterations, startrank, starttier){
+  
+  x <- 0
+  finalcost <- {
+  }
+  finalmatches <- {
+  }
+  finaldrafts <- 0
+  winrate <-
+    as.list(append(rep("W", winrate), rep("L", 100 - winrate)))
+  
+  while (x < num_iterations) {
+    rank <- startrank
+    tier <- starttier
+    netwins <- 0
+    cost <- 0
+    matches <- 0
+    drafts <- 0
+    wins <- 0
+    losses <- 0
+    while (rank < 5) {
+      if (rank == 0) {
+        cost = cost + 750
+        while (losses < 3 & wins < 7) {
+          gameresult <- sample(winrate, 1, replace = FALSE)
+          if ("W" %in% gameresult) {
+            wins = wins + 1
+            netwins = netwins + 2
+            matches = matches + 1
+            if (netwins >= 4) {
+              tier = tier + 1
+              netwins = netwins - 4
+            }
+            if (tier == 4) {
+              rank = rank + 1
+              tier = 0
+            }
+            if (rank > 0) {
+              break
+            }
+          }
+          else if ("L" %in% gameresult) {
+            losses = losses + 1
+            matches = matches + 1
+          }
+        }
+        if (wins == 7 | losses == 3) {
+          drafts = drafts + 1
+          if (wins == 0) {
+            cost = cost - 50
+          }
+          else if (wins == 1) {
+            cost = cost - 100
+          }
+          else if (wins == 2) {
+            cost = cost - 200
+          }
+          else if (wins == 3) {
+            cost = cost - 300
+          }
+          else if (wins == 4) {
+            cost = cost - 450
+          }
+          else if (wins == 5) {
+            cost = cost - 650
+          }
+          else if (wins == 6) {
+            cost = cost - 850
+          }
+          else if (wins == 7) {
+            cost = cost - 950
+          }
+          wins = 0
+          losses = 0
+          finaldrafts = finaldrafts + 1
+        }
+      }
+      else if (rank == 1 | rank == 2) {
+        if (wins == 0 & losses == 0) {
+          cost = cost + 750
+        }
+        while (losses < 3 & wins < 7) {
+          gameresult <- sample(winrate, 1, replace = FALSE)
+          if ("W" %in% gameresult) {
+            wins = wins + 1
+            netwins = netwins + 2
+            matches = matches + 1
+            if (netwins >= 5) {
+              tier = tier + 1
+              netwins = netwins - 5
+            }
+            if (tier == 4) {
+              rank = rank + 1
+              tier = 0
+            }
+            if (rank > 2) {
+              break
+            }
+          }
+          else if ("L" %in% gameresult) {
+            losses = losses + 1
+            netwins = netwins - 1
+            matches = matches + 1
+            if (netwins < 0 & tier > 0) {
+              tier = tier - 1
+              netwins = 4
+            }
+          }
+        }
+        if (wins == 7 | losses == 3) {
+          drafts = drafts + 1
+          if (wins == 0) {
+            cost = cost - 50
+          }
+          else if (wins == 1) {
+            cost = cost - 100
+          }
+          else if (wins == 2) {
+            cost = cost - 200
+          }
+          else if (wins == 3) {
+            cost = cost - 300
+          }
+          else if (wins == 4) {
+            cost = cost - 450
+          }
+          else if (wins == 5) {
+            cost = cost - 650
+          }
+          else if (wins == 6) {
+            cost = cost - 850
+          }
+          else if (wins == 7) {
+            cost = cost - 950
+          }
+          wins = 0
+          losses = 0
+          finaldrafts = finaldrafts + 1
+        }
+      }
+      else if (rank >= 3) {
+        if (wins == 0 & losses == 0) {
+          cost = cost + 750
+        }
+        while (losses < 3 & wins < 7) {
+          gameresult <- sample(winrate, 1, replace = FALSE)
+          if ("W" %in% gameresult) {
+            wins = wins + 1
+            netwins = netwins + 1
+            matches = matches + 1
+            if (netwins == 5) {
+              tier = tier + 1
+              netwins = 0
+            }
+            if (tier == 4) {
+              rank = rank + 1
+              tier = 0
+            }
+            if (rank == 5) {
+              drafts = drafts + 1
+              if (wins == 0) {
+                cost = cost - 50
+              }
+              else if (wins == 1) {
+                cost = cost - 100
+              }
+              else if (wins == 2) {
+                cost = cost - 200
+              }
+              else if (wins == 3) {
+                cost = cost - 300
+              }
+              else if (wins == 4) {
+                cost = cost - 450
+              }
+              else if (wins == 5) {
+                cost = cost - 650
+              }
+              else if (wins == 6) {
+                cost = cost - 850
+              }
+              else if (wins == 7) {
+                cost = cost - 950
+              }
+              finalcost[x + 1] = cost
+              finalmatches[x + 1] = matches
+              finaldrafts = finaldrafts + 1
+              break
+            }
+          }
+          else if ("L" %in% gameresult) {
+            losses = losses + 1
+            netwins = netwins - 1
+            matches = matches + 1
+            if (netwins < 0 & tier > 0) {
+              tier = tier - 1
+              netwins = 4
+            }
+          }
+        }
+        if (wins == 7 | losses == 3) {
+          drafts = drafts + 1
+          if (wins == 0) {
+            cost = cost - 50
+          }
+          else if (wins == 1) {
+            cost = cost - 100
+          }
+          else if (wins == 2) {
+            cost = cost - 200
+          }
+          else if (wins == 3) {
+            cost = cost - 300
+          }
+          else if (wins == 4) {
+            cost = cost - 450
+          }
+          else if (wins == 5) {
+            cost = cost - 650
+          }
+          else if (wins == 6) {
+            cost = cost - 850
+          }
+          else if (wins == 7) {
+            cost = cost - 950
+          }
+          wins = 0
+          losses = 0
+          finaldrafts = finaldrafts + 1
+        }
+      }
+    }
+    x = x + 1
+  }
+  print(paste(
+    "Cost in gems of going from starting rank to mythic is",
+    sum(finalcost) / num_iterations
+  ))
+  print(paste(
+    "Cost in dollars of going from starting rank to mythic is",
+    (sum(finalcost) * 0.0049995) / num_iterations
+  ))
+  print(paste(
+    "Games required to reach mythic is",
+    sum(finalmatches) / num_iterations
+  ))
+  print(paste("Number of drafts needed", sum(finaldrafts) / num_iterations))
+}
